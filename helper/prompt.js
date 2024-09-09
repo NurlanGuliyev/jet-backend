@@ -19,17 +19,22 @@ app.use(cors());
 app.use(express.json());
 
 export const constructPrompt = () => {
-	const knownAmenities = getFileContentNames(AMENITIES_FILE);
+    const knownAmenities = getFileContentNames(AMENITIES_FILE);
 
-	const knownSalesStatus = getFileContentNames(SALES_STATUS_FILE);
+    const knownSalesStatus = getFileContentNames(SALES_STATUS_FILE);
 
-	const knownConstructionStatus = getFileContentNames(CONSTRUCTION_STATUS_FILE);
+    const knownConstructionStatus = getFileContentNames(CONSTRUCTION_STATUS_FILE);
 
-	const knownProjectTypes = getFileContentNames(PROJECT_TYPE_FILE);
+    const knownProjectTypes = getFileContentNames(PROJECT_TYPE_FILE);
 
-	const content = fs.readFileSync('./data/instructions.txt', { encoding: 'utf8', flag: 'r' });
+    let content = fs.readFileSync('./data/instructions.txt', { encoding: 'utf8', flag: 'r' });
 
-	return content;
+    content = content.replace('${knownAmenities}', knownAmenities);
+    content = content.replace('${knownSalesStatus}', knownSalesStatus);
+    content = content.replace('${knownConstructionStatus}', knownConstructionStatus);
+    content = content.replace('${knownProjectTypes}', knownProjectTypes);
+    
+    return content;
 };
 
 export const getContent = async () => {
